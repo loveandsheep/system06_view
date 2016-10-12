@@ -54,13 +54,13 @@ void unitDrawer::draw()
 			float ring = ofxeasing::map_clamp(frame, 0, 15 + noise * 5, 0.0, 1.0, ofxeasing::quad::easeInOut);
 			
 			ofPushMatrix();
-			glScaled(tgs, tgs, 1.0);
+			glScalef(tgs, tgs, 1.0);
 			ofRotateZ(noise * 500 - ofxeasing::map_clamp(frame, 0, 15, 0.0, 400, ofxeasing::quad::easeInOut));
 			glLineWidth(2.0);
 			glDrawArrays(GL_LINE_STRIP, 1, (circle.size() - 1) * ring);
 			ofPopMatrix();
 
-			glScaled(rad, rad, 1.0);
+			glScalef(rad, rad, 1.0);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, circle.size());
 			
 			ofPopMatrix();
