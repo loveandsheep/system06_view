@@ -3,18 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-	ud.set(3,3);
+//	ud.set(ofRandom(1, 4), ofRandom(1, 7));
+	ud.set(3,6);
 	ofSetFrameRate(30);
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
-	if (ofGetFrameNum() % 120 == 0)
-	{
-		ud.set(ofRandom(1, 4), ofRandom(1, 7));
-	}
-	
+void ofApp::update()
+{
+	ud.update();
 }
 
 //--------------------------------------------------------------
@@ -30,7 +27,8 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	if (key == 'c') ud.clear();
+	if (key == 's') ud.set(ofRandom(1, 4), ofRandom(1, 7));
 }
 
 //--------------------------------------------------------------
