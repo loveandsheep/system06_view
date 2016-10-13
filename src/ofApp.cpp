@@ -11,7 +11,13 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	ofHideCursor();
 	ud.update();
+	
+	if (ofGetFrameNum() % 600 == 0)
+	{
+		ud.set(ofRandom(1, 4), ofRandom(1, 7));
+	}
 }
 
 //--------------------------------------------------------------
