@@ -40,37 +40,6 @@ void unitDrawer::set(int row, int column)
 		}
 	}
 	
-	if (ofGetFrameNum() % 60 == 0)
-	{
-		if (lastBangId == -1)
-		{
-			lastBangId = 0;
-			units[lastBangId].flip(false);
-		}
-		else
-		{
-			for (int i = 0;i < row;i++)
-			{
-				for (int j = 0;j < column;j++)
-				{
-					int idx = i * column + j;
-					int lb_r = lastBangId / curColumn;
-					int lb_c = lastBangId % curColumn;
-					
-					//評価を計測
-					units[idx].tmp_Score = 0;
-					
-					if ((abs(lb_r - units[idx].rId) < 2) &&//隣り合う
-						(abs(lb_c - units[idx].cId) < 2))
-					{
-						units[idx].tmp_Score += 50;
-					}
-					
-//					if (
-				}
-			}
-		}
-	}
 }
 
 void unitDrawer::update()
@@ -81,6 +50,55 @@ void unitDrawer::update()
 		{
 			int idx = i * curColumn + j;
 			units[idx].animFrame++;
+		}
+	}
+	
+	if (!isClear)
+	{
+		if (frame > 30)
+		{
+			static int step2 = 3;
+			if (ofGetFrameNum() % step2 == 0)
+			{
+				step2 = ofRandom(10, 50);
+				int idx = int(ofRandom(100)) % units.size();
+				if (!units[idx].ballStat)
+				{
+					units[idx].flip(true);
+				}
+			}
+			
+			static int step = 3;
+			if (ofGetFrameNum() % step == 0)
+			{
+				step = ofRandom(10, 100);
+				simUnit *targ = NULL;
+				for (int i = 0;i < curRow;i++)
+				{
+					for (int j = 0;j < curColumn;j++)
+					{
+						int idx = i * curColumn + j;
+						
+						if (!units[idx].ballStat) continue;
+						
+						if (targ == NULL)
+						{
+							targ = &units[idx];
+						}else{
+							if (targ->ballStat && units[idx].ballStat)
+							{
+								if (targ->animFrame < units[idx].animFrame)
+								{
+									targ = &units[idx];
+								}
+							}
+						}
+					}
+				}
+				
+				if (targ) targ->flip(false);
+			}
+
 		}
 	}
 }
@@ -132,7 +150,7 @@ void unitDrawer::draw()
 			if (units[idx].ballStat)
 				rad = ofxeasing::map_clamp(units[idx].animFrame, 20, 50 + ns * 40, 0.0, tgs, ofxeasing::elastic::easeOut);
 			else
-				rad = ofxeasing::map_clamp(units[idx].animFrame, 0, 20 + ns * 20, tgs, 0.0, ofxeasing::quad::easeInOut);
+				rad = ofxeasing::map_clamp(units[idx].animFrame, 0, 5 + ns * 5, tgs, 0.0, ofxeasing::quad::easeOut);
 				
 			float ring = ofxeasing::map_clamp(frame, 0, 15 + ns * 5, 0.0, 1.0, ofxeasing::quad::easeInOut);
 			
@@ -157,6 +175,42 @@ void unitDrawer::draw()
 		}
 		
 		glDisableClientState(GL_VERTEX_ARRAY);
+		
 	}
 	ofPopMatrix();
+	
+	float line = ofxeasing::map_clamp(frame, 0, 20, 0.0, 1.0, ofxeasing::quad::easeInOut);
+	
+//	ofPushMatrix();
+//	ofTranslate(ofGetWidth() / 2.0 - (curColumn - 1) * margine / 2.0,
+//				ofGetHeight() / 2.0 - (curRow - 1) * margine / 2.0);
+
+//	ofSetColor(50);
+//	ofEnableBlendMode(OF_BLENDMODE_ADD);
+//	for (int i = 0;i < curRow;i++)
+//	{
+//		ofDrawLine(-2000 * line, margine * i, 2000 * line, margine * i);
+//	}
+//	for (int i = 0;i < curColumn;i++)
+//	{
+//		ofDrawLine(margine * i, -1000 * line, margine * i, 1000 * line);
+//	}
+//	ofPopMatrix();
+//	
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	
+//	ofPushMatrix();
+//	ofSetColor(100);
+//	ofTranslate(ofGetWidth() / 2.0, ofGetHeight() / 2.0);
+//	ofDrawLine(-ofGetWidth() / 2.0 * line, (curRow - 1) * margine / 2.0 + margine * 0.75,
+//			   ofGetWidth() / 2.0 * line , (curRow - 1) * margine / 2.0 + margine * 0.75);
+//	ofDrawLine(-ofGetWidth() / 2.0 * line, -(curRow - 1) * margine / 2.0 - margine * 0.75,
+//			   ofGetWidth() / 2.0 * line , -(curRow - 1) * margine / 2.0 - margine * 0.75);
+//	
+//	ofDrawLine((curColumn - 1) * margine / 2.0 + margine * 0.75, -ofGetHeight() / 2.0 * line,
+//			   (curColumn - 1) * margine / 2.0 + margine * 0.75, ofGetHeight() / 2.0 * line);
+//	ofDrawLine(-(curColumn - 1) * margine / 2.0 - margine * 0.75, -ofGetHeight() / 2.0 * line,
+//			   -(curColumn - 1) * margine / 2.0 - margine * 0.75, ofGetHeight() / 2.0 * line);
+//	ofPopMatrix();
+
 }

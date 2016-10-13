@@ -14,7 +14,7 @@ void ofApp::update()
 	ofHideCursor();
 	ud.update();
 	
-	if (ofGetFrameNum() % 600 == 0)
+	if (ofGetFrameNum() % 3000 == 0)
 	{
 		ud.set(ofRandom(1, 4), ofRandom(1, 7));
 	}
@@ -24,8 +24,8 @@ void ofApp::update()
 void ofApp::draw(){
 	ofBackground(0);
 	ofSetColor(50);
-	ofDrawLine(0, ofGetHeight() / 2.0, ofGetWidth(), ofGetHeight() / 2.0);
-	ofDrawLine(ofGetWidth() / 2.0, 0, ofGetWidth() / 2.0, ofGetHeight());
+//	ofDrawLine(0, ofGetHeight() / 2.0, ofGetWidth(), ofGetHeight() / 2.0);
+//	ofDrawLine(ofGetWidth() / 2.0, 0, ofGetWidth() / 2.0, ofGetHeight());
 
 	ud.draw();
 	
