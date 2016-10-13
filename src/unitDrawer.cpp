@@ -105,7 +105,7 @@ void unitDrawer::clear()
 void unitDrawer::draw()
 {
 	float margine = 200;
-	float tgs = margine * 0.20;
+	float tgs = margine * 0.25;
 	
 	frame++;
 	if (isClear) clearFrame++;
